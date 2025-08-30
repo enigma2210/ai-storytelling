@@ -1,32 +1,32 @@
 # Rishabh's AI_based Storyteller
 
-🚀 **An AI-powered Django web application that generates captivating stories with realistic AI-generated characters and immersive visual scenes.**
+An AI-powered Django application generating captivating stories.
 
----
+## Features
+- Text & audio prompt input
+- AI story & character generation
+- Image creation with fallback
+- Responsive UI with animations
 
-## ✨ Features
+## Setup
+1. git clone your repo
+2. setup virtualenv/conda
+3. pip install -r requirements.txt
+4. install ffmpeg and add to PATH
+5. create .env with API keys
+6. python manage.py migrate
+7. python manage.py runserver
 
-- **Text & Audio Input**: Create stories from text prompts or upload audio files
-- **AI Story Generation**: Powered by Google's Gemini API for rich narratives
-- **AI Character Creation**: Detailed character descriptions with personality
-- **AI Image Generation**: Character portraits, backgrounds, and unified scenes
-- **Fallback System**: Professional placeholders when API quota is exceeded
-- **Modern UI**: Stunning glass-morphism design with smooth animations
-- **Real-time Processing**: Background tasks with live progress updates
+## Usage
+- Input prompt or audio
+- Generate and view story & images
 
----
+## Notes
+- Keep .env secret
+- Audio auto-converted
+- Placeholders for quota issues
 
-## 🔧 Prerequisites
+## License
+MIT
 
-- **Python 3.8+**
-- **Git**
-- **FFmpeg** (for audio processing)
-- **Google Gemini API Key**
-- **Hugging Face API Key**
-
----
-
-## 📋 Complete Setup Instructions
-
-### 1. Clone the Repository
-
+Enjoy storytelling!
