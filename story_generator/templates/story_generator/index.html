@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rishabh's AI_based Storyteller - Create Magical Stories</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-bg-start: #003366;
+            --primary-bg-end: #800080;
+            --accent-coral: #FF6F61;
+            --accent-cyan: #AEE5D8;
+            --text-white: #FFFFFF;
+            --text-secondary: #E8E8E8;
+            --dark-slate: #2F4F4F;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-light: 0 8px 32px rgba(0, 51, 102, 0.3);
+            --shadow-heavy: 0 16px 48px rgba(0, 51, 102, 0.4);
+            --gradient-primary: linear-gradient(135deg, var(--primary-bg-start) 0%, var(--primary-bg-end) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent-coral) 0%, #FF8A65 100%);
+            --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            color: var(--text-white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(174, 229, 216, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 5px; height: 5px; left: 40%; animation-delay: 6s; }
+        .particle:nth-child(5) { width: 4px; height: 4px; left: 50%; animation-delay: 8s; }
+        .particle:nth-child(6) { width: 7px; height: 7px; left: 60%; animation-delay: 10s; }
+        .particle:nth-child(7) { width: 3px; height: 3px; left: 70%; animation-delay: 12s; }
+        .particle:nth-child(8) { width: 5px; height: 5px; left: 80%; animation-delay: 14s; }
+        .particle:nth-child(9) { width: 4px; height: 4px; left: 90%; animation-delay: 16s; }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0 5rem;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-white) 0%, var(--accent-cyan) 50%, var(--accent-coral) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-icon {
+            display: inline-block;
+            margin-right: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Glass Card Effect */
+        .glass-card {
+            background: var(--gradient-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--shadow-light);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-heavy);
+            border-color: rgba(255, 111, 97, 0.3);
+        }
+
+        .input-card {
+            padding: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .input-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.8s;
+        }
+
+        .input-card:hover::before {
+            left: 100%;
+        }
+
+        /* Form Elements */
+        .form-label {
+            font-weight: 600;
+            color: var(--text-white);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            color: var(--text-white);
+            font-size: 1rem;
+            padding: 1rem 1.5rem;
+            transition: all 0.3s ease;
+            resize: vertical;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-coral);
+            box-shadow: 0 0 0 4px rgba(255, 111, 97, 0.2);
+            color: var(--text-white);
+            transform: translateY(-2px);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Premium Buttons */
+        .btn-premium {
+            background: var(--gradient-accent);
+            border: none;
+            border-radius: 20px;
+            color: var(--text-white);
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 1rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(255, 111, 97, 0.3);
+        }
+
+        .btn-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 111, 97, 0.4);
+            color: var(--text-white);
+        }
+
+        .btn-premium:hover::before {
+            left: 100%;
+        }
+
+        .btn-premium:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        /* Status Section */
+        .status-card {
+            display: none;
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .step.active {
+            background: var(--gradient-accent);
+            color: var(--text-white);
+            font-weight: 600;
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 111, 97, 0.3);
+        }
+
+        .spinner-border {
+            width: 4rem;
+            height: 4rem;
+            border-width: 4px;
+            border-color: var(--accent-coral) transparent var(--accent-coral) transparent;
+        }
+
+        /* Result Section */
+        .result-card {
+            display: none;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .content-box {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-box:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+        /* Image Containers */
+        .image-container {
+            display: none;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .image-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .story-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .story-image:hover {
+            transform: scale(1.05) rotateY(5deg);
+            border-color: var(--accent-coral);
+            box-shadow: 0 20px 50px rgba(255, 111, 97, 0.3);
+        }
+
+        .unified-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 24px;
+            border: 4px solid var(--accent-coral);
+            box-shadow: 0 15px 50px rgba(255, 111, 97, 0.4);
+            transition: all 0.4s ease;
+        }
+
+        .unified-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 70px rgba(255, 111, 97, 0.5);
+        }
+
+        /* Download Section */
+        .download-section {
+            display: none;
+            margin-top: 2rem;
+            text-align: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-download {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            border-radius: 16px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-download:hover {
+            background: var(--accent-cyan);
+            color: var(--dark-slate);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(174, 229, 216, 0.3);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            margin-top: 3rem;
+            text-align: center;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: var(--text-white);
+            border-radius: 16px;
+            padding: 1rem 2rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--text-white);
+            color: var(--text-white);
+            transform: translateY(-2px);
+        }
+
+        /* Recent Stories */
+        .recent-stories {
+            margin-top: 5rem;
+        }
+
+        .recent-title {
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--text-white);
+        }
+
+        .story-card {
+            background: var(--gradient-glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .story-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent-coral);
+            box-shadow: 0 20px 60px rgba(255, 111, 97, 0.2);
+        }
+
+        .story-card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .story-card:hover .story-card-img {
+            transform: scale(1.1);
+        }
+
+        .story-card-body {
+            padding: 1.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container { padding: 1rem; }
+            .input-card { padding: 2rem; }
+            .hero-title { font-size: 2.5rem; }
+            .progress-steps { flex-direction: column; align-items: stretch; }
+            .action-buttons { flex-direction: column; align-items: stretch; }
+            .download-section { flex-direction: column; align-items: stretch; }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+            transition: all 0.4s ease;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--accent-coral); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FF8A65; }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="bg-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section fade-in">
+            <h1 class="hero-title">
+                <span class="hero-icon"><i class="fas fa-magic"></i></span>
+                Rishabh's AI_based Storyteller
+            </h1>
+            <p class="hero-subtitle">
+                Transform your imagination into captivating stories with AI-powered characters and breathtaking scenes
+            </p>
+        </div>
+
+        <!-- Input Form -->
+        <div class="glass-card input-card fade-in">
+            <h3 class="section-title">
+                <i class="fas fa-feather-alt"></i>
+                Create Your Masterpiece
+            </h3>
+
+            <form id="storyForm" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="prompt" class="form-label">
+                        <i class="fas fa-pen-fancy"></i>
+                        Story Prompt
+                    </label>
+                    <textarea class="form-control" id="prompt" name="prompt" rows="4"
+                        placeholder="Describe your story idea... Let your creativity flow! ✨"
+                        maxlength="500"></textarea>
+                    <div class="form-text mt-2" style="color: rgba(255,255,255,0.6);">
+                        Be creative! Describe characters, magical worlds, epic adventures, or mysterious tales.
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="audioFile" class="form-label">
+                        <i class="fas fa-microphone-alt"></i>
+                        Or Upload Audio (Optional)
+                    </label>
+                    <input type="file" class="form-control" id="audioFile" name="audio_file" accept="audio/*">
+                    <div class="form-text mt-2" style="color: rgba(255,255,255,0.6);">
+                        Speak your story idea and let AI transcribe it for you
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn-premium">
+                        <i class="fas fa-rocket"></i>
+                        Generate Story & Scene
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Processing Status -->
+        <div class="glass-card status-card" id="statusSection">
+            <div class="progress-steps">
+                <div class="step" id="step1">📝 Writing Story</div>
+                <div class="step" id="step2">🎨 Creating Character</div>
+                <div class="step" id="step3">🌄 Painting Background</div>
+                <div class="step" id="step4">✨ Composing Scene</div>
+            </div>
+
+            <div class="spinner-border mb-4" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+
+            <h4 id="statusMessage" style="color: var(--accent-cyan); margin-bottom: 1rem;">
+                Generating your magical story...
+            </h4>
+            <p style="color: var(--text-secondary);">
+                This may take 1-2 minutes. Please be patient while we craft your masterpiece!
+            </p>
+        </div>
+
+        <!-- Story Result -->
+        <div class="glass-card result-card" id="resultSection">
+            <div class="row">
+                <!-- Story Content -->
+                <div class="col-lg-7">
+                    <h3 class="section-title">
+                        <i class="fas fa-scroll"></i>
+                        Your Generated Story
+                    </h3>
+                    <div id="storyText" class="content-box"></div>
+
+                    <h4 class="section-title" style="font-size: 1.5rem;">
+                        <i class="fas fa-user-circle"></i>
+                        Character Description
+                    </h4>
+                    <div id="characterDescription" class="content-box"></div>
+                </div>
+
+                <!-- Images Section -->
+                <div class="col-lg-5">
+                    <h4 class="section-title" style="font-size: 1.5rem;">
+                        <i class="fas fa-palette"></i>
+                        Generated Images
+                    </h4>
+
+                    <!-- Individual Images -->
+                    <div class="row mb-4">
+                        <div class="col-6 image-container" id="characterContainer">
+                            <div class="image-title">Character Portrait</div>
+                            <img id="characterImage" class="story-image" alt="Character">
+                        </div>
+                        <div class="col-6 image-container" id="backgroundContainer">
+                            <div class="image-title">Background Scene</div>
+                            <img id="backgroundImage" class="story-image" alt="Background">
+                        </div>
+                    </div>
+
+                    <!-- Final Unified Scene -->
+                    <div class="image-container" id="composedContainer">
+                        <h5 style="color: var(--accent-coral); font-weight: 600; margin-bottom: 1rem;">
+                            ✨ Unified Scene (AI Composed)
+                        </h5>
+                        <img id="composedImage" class="unified-image" alt="Unified Story Scene">
+                        <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 1rem;">
+                            Character and background seamlessly combined by AI
+                        </p>
+                    </div>
+
+                    <!-- Download Buttons -->
+                    <div class="download-section d-flex" id="downloadSection">
+                        <button class="btn-download" onclick="downloadImage('character')">
+                            <i class="fas fa-download"></i> Character
+                        </button>
+                        <button class="btn-download" onclick="downloadImage('background')">
+                            <i class="fas fa-download"></i> Background
+                        </button>
+                        <button class="btn-download" onclick="downloadImage('scene')"
+                                style="border-color: var(--accent-coral); color: var(--accent-coral);">
+                            <i class="fas fa-download"></i> Unified Scene
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn-premium" onclick="createNewStory()">
+                    <i class="fas fa-plus-circle"></i>
+                    Create Another Story
+                </button>
+                <button class="btn-secondary" onclick="shareStory()">
+                    <i class="fas fa-share-alt"></i>
+                    Share Story
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Stories -->
+        {% if recent_stories %}
+        <div class="recent-stories fade-in">
+            <h3 class="recent-title">
+                <i class="fas fa-history"></i>
+                Recent Creations
+            </h3>
+            <div class="row">
+                {% for story in recent_stories %}
+                <div class="col-md-4 mb-4">
+                    <div class="story-card" onclick="viewStory('{{ story.id }}')">
+                        {% if story.composed_image_path %}
+                        <img src="/media/{{ story.composed_image_path }}" class="story-card-img" alt="Story scene">
+                        {% endif %}
+                        <div class="story-card-body">
+                            <p style="color: var(--text-white); margin-bottom: 1rem; line-height: 1.5;">
+                                {{ story.user_prompt|truncatewords:15 }}
+                            </p>
+                            <small style="color: var(--accent-cyan);">
+                                <i class="fas fa-clock"></i>
+                                {{ story.created_at|timesince }} ago
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentStoryId = null;
+        let pollInterval = null;
+        let imageUrls = {};
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate elements on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationDelay = '0.2s';
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.glass-card, .recent-stories').forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Form submission with enhanced UX
+        document.getElementById('storyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const prompt = formData.get('prompt').trim();
+            const audioFile = formData.get('audio_file');
+
+            // Enhanced validation with better UX
+            if (!prompt && !audioFile) {
+                showNotification('Please provide a text prompt or upload an audio file.', 'warning');
+                return;
+            }
+
+            if (prompt && prompt.length < 10) {
+                showNotification('Please provide a more detailed prompt (at least 10 characters).', 'warning');
+                return;
+            }
+
+            // Smooth transition to processing
+            document.querySelector('.input-card').style.transform = 'translateY(-20px)';
+            document.querySelector('.input-card').style.opacity = '0';
+
+            setTimeout(() => {
+                document.querySelector('.input-card').style.display = 'none';
+                document.getElementById('statusSection').style.display = 'block';
+                document.getElementById('statusSection').classList.remove('hidden');
+                document.getElementById('resultSection').classList.add('hidden');
+
+                // Reset and start progress animation
+                document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+                document.getElementById('step1').classList.add('active');
+            }, 400);
+
+            // Submit form
+            fetch('/generate/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    showNotification(data.error, 'error');
+                    resetForm();
+                } else {
+                    currentStoryId = data.story_id;
+                    startPolling();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+                resetForm();
+            });
+        });
+
+        function startPolling() {
+            window.startTime = Date.now();
+            pollInterval = setInterval(() => {
+                if (currentStoryId) {
+                    checkStatus(currentStoryId);
+                }
+            }, 3000);
+        }
+
+        function checkStatus(storyId) {
+            fetch(`/status/${storyId}/`)
+            .then(response => response.json())
+            .then(data => {
+                updateProgressSteps(data.status);
+
+                if (data.status === 'completed') {
+                    clearInterval(pollInterval);
+                    showResults(data);
+                } else if (data.status === 'failed') {
+                    clearInterval(pollInterval);
+                    showNotification('Story generation failed. Please try again with a different prompt.', 'error');
+                    resetForm();
+                }
+            })
+            .catch(error => {
+                console.error('Status check error:', error);
+            });
+        }
+
+        function updateProgressSteps(status) {
+            const steps = ['step1', 'step2', 'step3', 'step4'];
+            let activeStep = 0;
+
+            if (status === 'processing') {
+                const elapsed = Date.now() - (window.startTime || Date.now());
+                if (elapsed > 15000) activeStep = 1;
+                if (elapsed > 35000) activeStep = 2;
+                if (elapsed > 50000) activeStep = 3;
+            }
+
+            steps.forEach((stepId, index) => {
+                const step = document.getElementById(stepId);
+                if (index <= activeStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+
+        function showResults(data) {
+    // Smooth transition to results
+    document.getElementById('statusSection').style.transform = 'scale(0.95)';
+    document.getElementById('statusSection').style.opacity = '0';
+
+    setTimeout(() => {
+        document.getElementById('statusSection').style.display = 'none';
+        document.getElementById('resultSection').style.display = 'block';
+        document.getElementById('resultSection').classList.remove('hidden');
+
+        // FIXED: Properly render HTML content with line breaks
+        const storyElement = document.getElementById('storyText');
+        const charElement = document.getElementById('characterDescription');
+
+        // Convert newlines to <br> tags and render as HTML
+        storyElement.innerHTML = data.story_text.replace(/\n/g, '<br>');
+        charElement.innerHTML = data.character_description.replace(/\n/g, '<br>');
+
+        // Alternative: If you want typewriter effect without <br> tags showing:
+        // typeWriterHTML('storyText', data.story_text.replace(/\n/g, '<br>'));
+        // setTimeout(() => typeWriterHTML('characterDescription', data.character_description.replace(/\n/g, '<br>')), 1000);
+
+        // Show images with stagger animation
+        if (data.character_image_url) {
+            setTimeout(() => {
+                const charImg = document.getElementById('characterImage');
+                charImg.src = data.character_image_url;
+                charImg.onload = () => {
+                    document.getElementById('characterContainer').style.display = 'block';
+                    document.getElementById('characterContainer').classList.add('fade-in');
+                };
+                imageUrls.character = data.character_image_url;
+            }, 500);
+        }
+
+        if (data.background_image_url) {
+            setTimeout(() => {
+                const bgImg = document.getElementById('backgroundImage');
+                bgImg.src = data.background_image_url;
+                bgImg.onload = () => {
+                    document.getElementById('backgroundContainer').style.display = 'block';
+                    document.getElementById('backgroundContainer').classList.add('fade-in');
+                };
+                imageUrls.background = data.background_image_url;
+            }, 800);
+        }
+
+        if (data.composed_image_url) {
+            setTimeout(() => {
+                const composedImg = document.getElementById('composedImage');
+                composedImg.src = data.composed_image_url;
+                composedImg.onload = () => {
+                    document.getElementById('composedContainer').style.display = 'block';
+                    document.getElementById('composedContainer').classList.add('fade-in');
+                };
+                imageUrls.scene = data.composed_image_url;
+            }, 1200);
+        }
+
+        setTimeout(() => {
+            document.getElementById('downloadSection').style.display = 'flex';
+            document.getElementById('downloadSection').classList.add('fade-in');
+        }, 1500);
+
+        // Smooth scroll to results
+        setTimeout(() => {
+            document.getElementById('resultSection').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 200);
+    }, 400);
+}
+
+
+        function typeWriter(elementId, text) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '';
+            let i = 0;
+
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, 20);
+                }
+            }
+            type();
+        }
+
+        function downloadImage(type) {
+            const url = imageUrls[type];
+            if (url) {
+                const link = document.createElement('a');
+                link.download = `rishabh-ai-storyteller-${type}.jpg`;
+                link.href = url;
+                link.click();
+
+                showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} image downloaded!`, 'success');
+            }
+        }
+
+        function resetForm() {
+            document.querySelector('.input-card').style.display = 'block';
+            document.querySelector('.input-card').style.transform = 'translateY(0)';
+            document.querySelector('.input-card').style.opacity = '1';
+
+            document.getElementById('statusSection').classList.add('hidden');
+            document.getElementById('resultSection').classList.add('hidden');
+
+            // Hide all image containers
+            document.querySelectorAll('.image-container').forEach(container => {
+                container.style.display = 'none';
+                container.classList.remove('fade-in');
+            });
+            document.getElementById('downloadSection').style.display = 'none';
+
+            currentStoryId = null;
+            imageUrls = {};
+            if (pollInterval) {
+                clearInterval(pollInterval);
+            }
+        }
+
+        function createNewStory() {
+            resetForm();
+            document.getElementById('storyForm').reset();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showNotification('Ready to create your next masterpiece!', 'success');
+        }
+
+        function shareStory() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check out my AI-generated story from Rishabh\'s AI_based Storyteller!',
+                    text: document.getElementById('storyText').textContent.substring(0, 100) + '...',
+                    url: window.location.href
+                }).catch(() => {
+                    fallbackShare();
+                });
+            } else {
+                fallbackShare();
+            }
+        }
+
+        function fallbackShare() {
+            const storyText = document.getElementById('storyText').textContent;
+            navigator.clipboard.writeText(storyText).then(() => {
+                showNotification('Story copied to clipboard! 📋', 'success');
+            });
+        }
+
+        function viewStory(storyId) {
+            window.open(`/story/${storyId}/`, '_blank');
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                color: white;
+                font-weight: 500;
+                z-index: 9999;
+                transform: translateX(400px);
+                transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                max-width: 350px;
+                word-wrap: break-word;
+            `;
+
+            // Set background based on type
+            const colors = {
+                success: 'linear-gradient(135deg, #4CAF50, #45a049)',
+                error: 'linear-gradient(135deg, #f44336, #d32f2f)',
+                warning: 'linear-gradient(135deg, #ff9800, #f57c00)',
+                info: 'linear-gradient(135deg, #2196F3, #1976D2)'
+            };
+
+            notification.style.background = colors[type] || colors.info;
+            notification.innerHTML = message;
+
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+
+            // Remove after 4 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 400);
+            }, 4000);
+        }
+
+        window.startTime = Date.now();
+    </script>
+</body>
+</html>
